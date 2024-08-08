@@ -21,55 +21,60 @@ public class StudentController {
     @PostMapping("/add") // creat new Student
     public ApiResponse addStudent(@RequestBody Student student) {
         students.add(student);
-        return new ApiResponse(" Student Addedd");
+        return new ApiResponse(" Student Addedd successfully");
     }
 
+    @DeleteMapping("/delete/{index}")// delete student
+    public ApiResponse deleteStudent(@PathVariable int index) {
+        students.remove(index);
+        return new ApiResponse(" Student Deleted successfully");
+    }
 
-    @GetMapping("/get-name/{index}") // return name by index
-    public String getName( @PathVariable int index) {
+    @PutMapping("/update/{index}") // update student
+    public ApiResponse updateStudent(@PathVariable int index, @RequestBody Student student) {
+        students.set(index, student);
+        return new ApiResponse(" Student Updated successfully");
+    }
+
+    @GetMapping("/get-name/{index}") // return name of student by index
+    public String getName(@PathVariable int index) {
         return students.get(index).getName();
+
 //        for (Student student : students) {
 //            if (student.getName().equals(name)) {
 //                return getName(name);
 //            }
 //        } return name;
-
     }
 
-
-    @GetMapping("/get-age/{index}") // return age by index
-    public int getAge( @PathVariable int index ) {
+    @GetMapping("/get-age/{index}") // return age of student by index
+    public int getAge(@PathVariable int index) {
         return students.get(index).getAge();
-//        for (Student student : students) {
-//            if (student.getAge() == age) {
-//                return age;
-//            }else {
-//                return 0;
-//            }
-//        } return age;
     }
 
-    @GetMapping("/get-degree/{index}") // return degree by index
-    public String getDegree( @PathVariable int index ) {
+    @GetMapping("/get-degree/{index}") // return degree of student by index
+    public String getDegree(@PathVariable int index) {
         return students.get(index).getDegree();
 //        for (Student student : students) {
 //            if (degree.equals("bachelor") || degree.equals("diploma") || degree.equals("master")) {
 //                return students.get(index).getDegree();
-//            }
-//        }
+//            }}
 //        return degree;
     }
 
-    @GetMapping("/get-status/{index}") // return True if graduated , return False if not graduates
-    public String getStudy_Status( @PathVariable int index ) {
-        for (Student student : students) {
-            if (student.getStudy_status().equals("graduated")){
-                return "true";
-            } else if (student.getStudy_status().equals("not graduated")) {
+    @GetMapping("/get-status/{index}") // return True if graduated , return False if not graduates by index
+    public String getStudy_Status(@PathVariable int index) {
+
+        if (index >= 0 && index < students.size()) {
+            Student student = students.get(index);
+            if (student.getStudy_status().equals("not graduated")) {
                 return "false";
             }
+            if (student.getStudy_status().equals("graduated")) {
+                return "true";
+            }
         }
-        return null;
+        return "invalid index";
     }
 
 
